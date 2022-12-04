@@ -29,6 +29,16 @@ public class UserService {
         return "성공";
     }
     public String login(String userName, String password){
+        //userName 없음
+        User selectedUser = userRepository.findByUserName(userName)
+                .orElseThrow(()->new AppException(ErrorCode.USERNAME_NOT_FOUND,userName+ "이 없습니다." ));
+        
+        //password 틀림
+        if(!encoder.matches(selectedUser.getPassword(),password)){
+            throw new AppException(ErrorCode.INVALID_PASSWORD,"패스워드가 잘못 되었습니다.");
+        }
+
     return "token리턴";
     }
 }
+
