@@ -18,6 +18,7 @@ public class UserController {
 //    @GetMapping("/join")
     public ResponseEntity<String> join(@RequestBody UserJoinRequest dto){
          userService.join(dto.getUserName(), dto.getPassword());
+//         System.out.println("Controller End");
     return ResponseEntity.ok().body("회원가입이 성공");
     }
 
