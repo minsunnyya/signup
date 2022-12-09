@@ -16,4 +16,4 @@ spring:
 
 jwt:
   token:
-    secret: "secretKey"
+    secret: fast-campus.simple_sns_2022_secret_key
