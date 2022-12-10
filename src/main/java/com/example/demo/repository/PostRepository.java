@@ -1,10 +1,13 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.entity.PostEntity;
+import com.example.demo.domain.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
-    Optional<PostEntity> findByUsername(String username);
+//    Optional<PostEntity> findByUserid(Integer userid);
 }

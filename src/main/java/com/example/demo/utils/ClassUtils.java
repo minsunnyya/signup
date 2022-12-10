@@ -6,4 +6,8 @@ public class ClassUtils {
         return clazz != null && clazz.isInstance(o) ? clazz.cast(o) : null;
     }
 
+    // for test
+    public static <T> T getTest(Object o, Class<T> clazz) {
+        return clazz.cast(o);
+    }
 }

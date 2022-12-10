@@ -15,29 +15,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public ResponseEntity<String> posts(@RequestBody PostRequest dto, Authentication authentication){
         System.out.println("Controller Test Enter");
-        System.out.println(authentication.getName());
+//        System.out.println(authentication.getName());
         postService.post(dto.getTitle(),dto.getBody(), authentication.getName());
         System.out.println("Controller Test");
         return ResponseEntity.ok().body("등록 완료");
     }
-    @PutMapping("/{postId}")    // postid → string으로만 오는 거 같은데 숫자형태로 올 수 없는지
+    @PutMapping("/posts/{postId}")    // postid → string으로만 오는 거 같은데 숫자형태로 올 수 없는지
     public ResponseEntity<String> modify(@PathVariable String postId, @RequestBody ModifyRequest dto, Authentication authentication) {
+        System.out.println("Modify Controller Tes1");
+        System.out.println(postId.getClass().getName());
+        System.out.println(authentication.getPrincipal());
         User user = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), User.class);
+//        User user = ClassUtils.getTest(authentication.getPrincipal(), User.class);
+        System.out.println("Modify Controller Tes2");
+        System.out.println(user);
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
         postService.modify(user.getId(), Integer.parseInt(postId), dto.getTitle(), dto.getBody());
+        System.out.println("Modify Controller Tes3");
         return ResponseEntity.ok().body("수정 완료");
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/posts/{postId}")
     public ResponseEntity<String> delete(@PathVariable String postId, Authentication authentication) {
+        System.out.println("Delete Controller Tes1");
         User user = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), User.class);
+        System.out.println("Delete Controller Tes2");
         postService.delete(user.getId(), Integer.parseInt(postId));
         return ResponseEntity.ok().body("삭제 완료");
     }

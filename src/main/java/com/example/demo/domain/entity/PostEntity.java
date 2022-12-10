@@ -1,18 +1,18 @@
 package com.example.demo.domain.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import com.example.demo.domain.entity.UserEntity;
 
 import javax.persistence.*;
+
 
 @Setter
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +22,15 @@ public class PostEntity {
 
     private String body;
 
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
-    public static PostEntity of(String title, String body, String username) {
+    public static PostEntity of(String title, String body, UserEntity user) {
         PostEntity entity = new PostEntity();
         entity.setTitle(title);
         entity.setBody(body);
-        entity.setUsername(username);
+        entity.setUser(user);
         return entity;
     }
 }

@@ -14,6 +14,9 @@ public enum ErrorCode {
     DUPLICATED_USER_NAME(HttpStatus.CONFLICT, "Duplicated user name"),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "Invalid password"),
     INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, "User has invalid permission"),
+
+    DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Database error occurs"),
+
     ;
     private HttpStatus httpStatus;
     private String message;
