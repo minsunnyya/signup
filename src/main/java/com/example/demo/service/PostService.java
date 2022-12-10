@@ -32,15 +32,16 @@ public class PostService {
     }
 
     @Transactional
-    public String modify(Integer userId, Integer postId, String title, String body) {
+    public String modify(String userName, Integer postId, String title, String body) {
         System.out.println("Modify Service Tes1");
         PostEntity postEntity = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, String.format("postId is %d", postId)));
         System.out.println("Modify PostEntity");
 
-//        UserEntity userEntity = userRepository.findById(userId)
-//                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s not founded", userId)));
-//        System.out.println("Modify UserEntity");
+        UserEntity userEntity = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s not founded", userName)));
+
+        Integer userId = userEntity.getId();
 
         if (!Objects.equals(postEntity.getUser().getId(), userId)) {
             throw new AppException(ErrorCode.INVALID_PERMISSION, String.format("user %s has no permission with post %d", userId, postId));
@@ -56,15 +57,16 @@ public class PostService {
     }
 
     @Transactional
-    public String delete(Integer userId, Integer postId) {
+    public String delete(String userName, Integer postId) {
         System.out.println("Delete Service Tes1");
         PostEntity postEntity = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, String.format("postId is %d", postId)));
         System.out.println("Delete PostEntity");
 
-//        UserEntity userEntity = userRepository.findById(userId)
-//                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s not founded", userId)));
-//        System.out.println("Delete UserEntity");
+        UserEntity userEntity = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s not founded", userName)));
+
+        Integer userId = userEntity.getId();
 
         if (!Objects.equals(postEntity.getUser(), userId)) {
             throw new AppException(ErrorCode.INVALID_PERMISSION, String.format("user %s has no permission with post %d", userId, postId));

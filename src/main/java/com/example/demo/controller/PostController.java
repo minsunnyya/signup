@@ -31,15 +31,8 @@ public class PostController {
     @PutMapping("/posts/{postId}")    // postid → string으로만 오는 거 같은데 숫자형태로 올 수 없는지
     public ResponseEntity<String> modify(@PathVariable String postId, @RequestBody ModifyRequest dto, Authentication authentication) {
         System.out.println("Modify Controller Tes1");
-        System.out.println(postId.getClass().getName());
-        System.out.println(authentication.getPrincipal());
-        User user = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), User.class);
-//        User user = ClassUtils.getTest(authentication.getPrincipal(), User.class);
-        System.out.println("Modify Controller Tes2");
-        System.out.println(user);
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
-        postService.modify(user.getId(), Integer.parseInt(postId), dto.getTitle(), dto.getBody());
+
+        postService.modify(authentication.getName(), Integer.parseInt(postId), dto.getTitle(), dto.getBody());
         System.out.println("Modify Controller Tes3");
         return ResponseEntity.ok().body("수정 완료");
     }
@@ -47,9 +40,8 @@ public class PostController {
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<String> delete(@PathVariable String postId, Authentication authentication) {
         System.out.println("Delete Controller Tes1");
-        User user = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), User.class);
-        System.out.println("Delete Controller Tes2");
-        postService.delete(user.getId(), Integer.parseInt(postId));
+
+        postService.delete(authentication.getName(), Integer.parseInt(postId));
         return ResponseEntity.ok().body("삭제 완료");
     }
 }

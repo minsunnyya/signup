@@ -41,6 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 return;
             } else {
                 token = header.split(" ")[1].trim();
+                System.out.println(token);
             }
 
             String userName = JwtTokenUtils.getUsername(token, secretKey);

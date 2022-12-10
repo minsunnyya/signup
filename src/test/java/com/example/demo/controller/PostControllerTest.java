@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.configuration.SecurityConfig;
 import com.example.demo.domain.dto.ModifyRequest;
 import com.example.demo.domain.dto.PostRequest;
 import com.example.demo.exception.AppException;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -33,8 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@WebMvcTest
 @WebAppConfiguration
+//@WebMvcTest
+//@ContextConfiguration(classes = {SecurityConfig.class})
 public class PostControllerTest {
 
 
@@ -49,7 +52,8 @@ public class PostControllerTest {
 
     //포스트 작성 성공
     @Test
-    @WithMockUser
+    //    @WithAnonymousUser // 인증 된지 않은 상태
+    @WithMockUser   // 인증된 상태
     @DisplayName("포스트 작성 성공")
     void post_success() throws Exception {
         String title ="title";
@@ -62,8 +66,7 @@ public class PostControllerTest {
     }
     //포스트 수정 성공
     @Test
-    @WithAnonymousUser
-//    @WithMockUser(roles = "USER")
+    @WithMockUser
     @DisplayName("포스트 수정 성공")
     void modity_success() throws Exception {
         String title ="title2";
@@ -71,14 +74,13 @@ public class PostControllerTest {
         mockMvc.perform(put("/api/v1/posts/1")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsBytes(new PostRequest("title", "body"))))
-
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
 
     @Test
-    @WithAnonymousUser
+    @WithMockUser
     @DisplayName("포스트 삭제 성공")
     void delete_success() throws Exception {
         mockMvc.perform(delete("/api/v1/posts/1")
