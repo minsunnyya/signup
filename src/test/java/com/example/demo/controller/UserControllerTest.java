@@ -43,6 +43,7 @@ class UserControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    //회원 가입 성공 했을 때 테스트
     @Test
     @DisplayName("회원가입 성공")
     @WithMockUser
@@ -58,6 +59,7 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
+   //userId가 중복 됐을 때 테스트 
     @Test
     @DisplayName("회원가입 실패")
     @WithMockUser
@@ -75,7 +77,8 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
-
+    
+    //로그인 성공했을 때 테스트
     @Test
     @DisplayName("로그인 성공")
     @WithMockUser
@@ -95,6 +98,7 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
+    //userName이 존재하지 않을 때 테스트
     @Test
     @DisplayName("로그인 실패 - userName없음")
     @WithMockUser
@@ -114,6 +118,7 @@ class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    //password틀렸을 때 테스트
     @Test
     @DisplayName("로그인 실패 - password틀림")
     @WithMockUser

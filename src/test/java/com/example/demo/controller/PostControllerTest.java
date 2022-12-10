@@ -47,6 +47,7 @@ public class PostControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    //포스트 작성 성공
     @Test
     @WithMockUser
     @DisplayName("포스트 작성 성공")
@@ -59,7 +60,7 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
+    //포스트 수정 성공
     @Test
     @WithAnonymousUser
 //    @WithMockUser(roles = "USER")
@@ -75,6 +76,7 @@ public class PostControllerTest {
                 .andExpect(status().isOk());
     }
 
+
     @Test
     @WithAnonymousUser
     @DisplayName("포스트 삭제 성공")
@@ -85,7 +87,7 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
+    //로그인한 상태가 아닐 때 작성 실패 테스트
     @Test
     @WithAnonymousUser
     @DisplayName("포스트작성실패(1)_로그인한상태가_아니라면_에러발생")
@@ -98,7 +100,7 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
-
+    //로그인한 상태가 아닐 때 수정 실패 테스트
     @Test
     @WithAnonymousUser
     @DisplayName("포스트수정실패(1)_로그인한상태가_아니라면_에러발생")
@@ -110,7 +112,7 @@ public class PostControllerTest {
                 .andExpect(status().is(ErrorCode.INVALID_TOKEN.getHttpStatus().value()));
     }
 
-
+    //본인이 작성한 글이 아닐 때 작성 실패 테스트
     @Test
     @WithMockUser
     @DisplayName("포스트수정실패(2)_본인이_작성한_글이_아니라면_에러발생")
@@ -131,6 +133,7 @@ public class PostControllerTest {
                 .andExpect(status().is(ErrorCode.INVALID_PERMISSION.getHttpStatus().value()));
     }
 
+    //수정하는 글이 없을 때 테스트
     @Test
     @WithMockUser
     @DisplayName("포스트수정실패(3)_수정하려는글이_없다면_에러발생")
@@ -144,7 +147,8 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.POST_NOT_FOUND.getHttpStatus().value()));
     }
-
+    
+    //데이터 베이스 에러 났을 때 테스트
     @Test
     @WithMockUser
     @DisplayName("포스트수정실패(4)_데이터베이스_에러_발생시_에러발생")
@@ -156,7 +160,8 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.DATABASE_ERROR.getHttpStatus().value()));
     }
-
+    
+    //로그인 한 상태가 아닐 때 테스트
     @Test
     @WithAnonymousUser
     @DisplayName("포스트삭제실패(1)_로그인한상태가_아니라면_에러발생")
@@ -166,7 +171,8 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_TOKEN.getHttpStatus().value()));
     }
-
+    
+    //본인이 작성한 글이 아닐 때 테스트
     @Test
     @WithMockUser
     @DisplayName("포스트삭제실패(2)_본인이_작성한_글이_아니라면_에러발생")
@@ -178,7 +184,8 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_PERMISSION.getHttpStatus().value()));
     }
-
+    
+    //수정하는 글이 없을 때 테스트
     @Test
     @WithMockUser
     @DisplayName("포스트삭제실패(3)_수정하려는글이_없다면_에러발생")
@@ -192,6 +199,7 @@ public class PostControllerTest {
                 .andExpect(status().is(ErrorCode.POST_NOT_FOUND.getHttpStatus().value()));
     }
 
+    //데이터베이스 에러 테스트
     @Test
     @WithMockUser
     @DisplayName("포스트삭제실패(4)_데이터베이스_에러_발생시_에러발생")
