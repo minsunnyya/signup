@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.dto.UserJoinRequest;
 import com.example.demo.domain.dto.UserLoginRequest;
+import com.example.demo.domain.response.UserJoinResponse;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody UserJoinRequest dto){
-         userService.join(dto.getUserName(), dto.getPassword());
+        UserJoinResponse userJoinResponse = userService.join(dto.getUserName(), dto.getPassword());
     return ResponseEntity.ok().body("회원가입이 성공");
     }
 

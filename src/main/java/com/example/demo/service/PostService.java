@@ -20,7 +20,7 @@ public class PostService {
     private final UserRepository userRepository;
 
         @Transactional
-    public void post(String title, String body, String username) {
+    public String post(String title, String body, String username) {
         UserEntity userEntity = userRepository.findByUserName(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s not founded", username)));
         System.out.println("Service Test Post1");
@@ -29,6 +29,8 @@ public class PostService {
 
         postRepository.save(post);
         System.out.println("Service Test Post2");
+        
+        return "포스트 작성 완료";
     }
 
     @Transactional
@@ -38,6 +40,8 @@ public class PostService {
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, String.format("postId is %d", postId)));
         System.out.println("Modify PostEntity");
 
+
+                System.out.println(userName);
         UserEntity userEntity = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s not founded", userName)));
 
@@ -53,7 +57,7 @@ public class PostService {
 
         postRepository.saveAndFlush(postEntity);
 
-        return "Service Test Post2";
+        return "포스트 수정 완료";
     }
 
     @Transactional
@@ -74,6 +78,6 @@ public class PostService {
 
         postRepository.delete(postEntity);
 
-        return "삭제 처리";
+        return "포스트 삭제 완료";
     }
 }

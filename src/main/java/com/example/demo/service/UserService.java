@@ -4,21 +4,23 @@ package com.example.demo.service;
 //import com.example.demo.configuration.filter.JwtTokenfilter;
 import com.example.demo.domain.User;
 import com.example.demo.domain.entity.UserEntity;
+import com.example.demo.domain.response.UserJoinResponse;
 import com.example.demo.exception.AppException;
 import com.example.demo.exception.ErrorCode;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.utils.JwtTokenUtils;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class UserService {
 
@@ -39,16 +41,25 @@ public class UserService {
         return user;
     }
 
-    public String join(String userName, String password){
+    public UserJoinResponse join(String userName, String password){
         userRepository.findByUserName(userName).ifPresent(
                 user -> {
                     throw new AppException(ErrorCode.DUPLICATED_USER_NAME, " "+ userName +"는 이미 있습니다.");
                 }
         );
         UserEntity user = UserEntity.of(userName, encoder.encode(password));
-        userRepository.save(user);
-        return "성공";
+
+        UserEntity savedUser = userRepository.save(user);
+
+        UserJoinResponse userJoinResponse =
+                UserJoinResponse.builder()
+                        .userName(savedUser.getUserName())
+                        .password(savedUser.getPassword())
+                        .build();
+        return userJoinResponse;
+//        return "회원가입 성공";
     }
+
     public String login(String userName, String password){
         //userName 없음
         User savedUser = loadUserByUsername(userName);

@@ -1,17 +1,15 @@
-package com.example.demo.domain.dto;
+package com.example.demo.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModifyRequest {
-
-    private String title;
-    private String body;
-
+@Getter
+@Builder
+public class UserJoinResponse {
+    private String userName;
+    private String password;
 }
