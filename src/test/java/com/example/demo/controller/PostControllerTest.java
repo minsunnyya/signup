@@ -1,11 +1,7 @@
 package com.example.demo.controller;
-
 import com.example.demo.configuration.EncoderConfig;
-import com.example.demo.domain.dto.DeleteRequest;
 import com.example.demo.domain.dto.ModifyRequest;
 import com.example.demo.domain.dto.PostRequest;
-import com.example.demo.domain.entity.PostEntity;
-import com.example.demo.domain.entity.UserEntity;
 import com.example.demo.exception.AppException;
 import com.example.demo.exception.ErrorCode;
 import com.example.demo.service.PostService;
@@ -13,22 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -82,7 +69,7 @@ public class PostControllerTest {
                 .build();
 
         when(postService.post(any(), any(), any()))
-                .thenReturn("포스트 작성 성공");
+                .thenReturn("포스트 작성 실패");
 
         mockMvc.perform(post("/api/v1/posts")
                         .with(csrf())
@@ -114,7 +101,7 @@ public class PostControllerTest {
     }
 
     @Test
-    @WithAnonymousUser // 인증 된지 않은 상태
+    @WithAnonymousUser // 인증 되지 않은 상태
     @DisplayName("포스트 수정 실패(1) : 인증 실패")
     void modify_fail1() throws Exception {
 

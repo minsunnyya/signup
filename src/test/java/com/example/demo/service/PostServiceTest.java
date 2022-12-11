@@ -32,6 +32,20 @@ public class PostServiceTest {
     @MockBean
     PostRepository postRepository;
 
+    @Test
+    @DisplayName("등록 성공")
+    void post_success() {
+        TestInfoFixture.TestInfo fixture = TestInfoFixture.get();
+
+        PostEntity mockPostEntity = mock(PostEntity.class);
+        UserEntity mockUserEntity = mock(UserEntity.class);
+
+        when(userRepository.findByUserName(fixture.getUserName())).thenReturn(Optional.of(mockUserEntity));
+        when(postRepository.save(mockPostEntity)).thenReturn(mockPostEntity);
+
+        //Assertions.assertDoesNotThrow(() -> postService.post(fixture.getUserName(), fixture.getTitle(), fixture.getBody()));
+        Assertions.assertDoesNotThrow(() -> postService.post(fixture.getTitle(), fixture.getBody(), fixture.getUserName()));
+    }
     //포스트생성시 유저가 존재하지 않을 때 에러
     @Test
     @DisplayName("등록 실패 : 유저 존재하지 않음")
@@ -43,10 +57,27 @@ public class PostServiceTest {
 
         Assertions.assertEquals(ErrorCode.USERNAME_NOT_FOUND, exception.getErrorCode());
     }
+
+    @Test
+    @DisplayName("수정 실패- 작성자!=유저")
+    void modify_fail_not_match() {
+        TestInfoFixture.TestInfo fixture = TestInfoFixture.get();
+        UserEntity userFixture = UserEntityFixture.get("user", "password");
+        UserEntity userFixture2 = UserEntityFixture.get("user2", "password2");
+
+        //when(postRepository.findById(fixture.getPostId())).thenReturn(Optional.of(mockPostEntity));
+        when(postRepository.findById(fixture.getPostId())).thenReturn(Optional.of(PostEntity.of("title","body",userFixture)));
+        when(userRepository.findByUserName(userFixture.getUserName())).thenReturn(Optional.of(UserEntity.of(userFixture2.getUserName(), userFixture2.getPassword())));
+
+        AppException exception = Assertions.assertThrows(AppException.class, ()
+                -> postService.modify(fixture.getUserName(), fixture.getPostId(), fixture.getTitle(), fixture.getBody()));
+
+        Assertions.assertEquals(ErrorCode.INVALID_PERMISSION, exception.getErrorCode());
+    }
     //포스트 수정시 포스트 없을 때 에러
     @Test
     @DisplayName("수정 실패 : 포스트 존재하지 않음")
-    @WithMockUser   
+    @WithMockUser
     void post_fail_no_post() {
         TestInfoFixture.TestInfo fixture = TestInfoFixture.get();
         when(postRepository.findById(fixture.getPostId())).thenReturn(Optional.empty());
