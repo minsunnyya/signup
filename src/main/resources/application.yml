@@ -9,10 +9,10 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/test
+    url: jdbc:mysql://localhost:3306/test
 #    url: jdbc:mariadb://127.0.0.1:3307
     username: root
-    password: 1q2w3e4r
+    password: dlqns6312!
 
 jwt:
   token:
